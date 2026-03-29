@@ -1,0 +1,16 @@
+# This file forces all traffic going to /api/anything to be routed through api/index.php
+# This allows us to have clean URLs like: website.com/api/users/register
+
+RewriteEngine On
+
+# Only rewrite if the requested URL is not a direct file or directory
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Route everything after /api/ to index.php inside the api folder
+RewriteRule ^api/(.*)$ api/index.php?endpoint=$1 [QSA,NC,L]
+
+# CORS Headers (Allows React Native to talk to this API)
+Header add Access-Control-Allow-Origin "*"
+Header add Access-Control-Allow-Headers "Content-Type, Authorization"
+Header add Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
